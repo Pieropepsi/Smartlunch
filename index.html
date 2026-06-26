@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartLunch - Inicio</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+      <div class="logo">🍱 SmartLunch</div>
+      <ul>
+        <li class="active"><a href="index.html">🏠 Inicio</a></li>
+        <li><a href="favoritos.html">⭐ Favoritos</a></li>
+        <li><a href="historial.html">📋 Historial</a></li>
+        <li><a href="configuracion.html">⚙️ Configuración</a></li>
+        <li><a href="#" onclick="cerrarSesion()">🚪 Cerrar Sesión</a></li>
+      </ul>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main">
+      <div class="search">
+        <input type="text" id="buscador" placeholder="¿Qué quieres pedir hoy?">
+      </div>
+
+      <div class="hero">
+        <div class="hero-text">
+          <h1>Tu pedido, listo a tiempo</h1>
+          <p>Pide tus refrigerios con anticipación y evita las filas durante el recreo.</p>
+          <button>Hacer Pedido</button>
+        </div>
+        <div class="hero-img">🍱</div>
+      </div>
+
+      <div class="categorias">
+        <div class="categoria" onclick="mostrarTodos()">🍽️ Todos</div>
+        <div class="categoria" onclick="filtrar('sandwich')">🥪 Sándwiches</div>
+        <div class="categoria" onclick="filtrar('bebida')">🧃 Bebidas</div>
+        <div class="categoria" onclick="filtrar('snack')">🍕 Snacks</div>
+        <div class="categoria" onclick="filtrar('fruta')">🍎 Frutas</div>
+      </div>
+
+      <section id="productos">
+        <h2>Productos Destacados</h2>
+        <div class="productos-grid">
+          <div class="card sandwich">
+            <div class="estrella" onclick="agregarFavorito('Sándwich de pollo')">⭐</div>
+            <div class="emoji">🥪</div>
+            <h3>Sándwich de pollo</h3>
+            <p>S/ 6.00</p>
+            <button onclick="agregarProducto('Sándwich de pollo', 6.00)">Agregar</button>
+          </div>
+          <div class="card sandwich">
+            <div class="estrella" onclick="agregarFavorito('Hot Dog')">⭐</div>
+            <div class="emoji">🌭</div>
+            <h3>Hot Dog</h3>
+            <p>S/ 4.50</p>
+            <button onclick="agregarProducto('Hot Dog', 4.50)">Agregar</button>
+          </div>
+          <div class="card sandwich">
+            <div class="estrella" onclick="agregarFavorito('Sándwich Mixto')">⭐</div>
+            <div class="emoji">🥪</div>
+            <h3>Sándwich Mixto</h3>
+            <p>S/ 5.00</p>
+            <button onclick="agregarProducto('Sándwich Mixto', 5.00)">Agregar</button>
+          </div>
+          <div class="card bebida">
+            <div class="estrella" onclick="agregarFavorito('Jugo de naranja')">⭐</div>
+            <div class="emoji">🧃</div>
+            <h3>Jugo de naranja</h3>
+            <p>S/ 3.00</p>
+            <button onclick="agregarProducto('Jugo de naranja', 3.00)">Agregar</button>
+          </div>
+          <div class="card bebida">
+            <div class="estrella" onclick="agregarFavorito('Gaseosa')">⭐</div>
+            <div class="emoji">🥤</div>
+            <h3>Gaseosa</h3>
+            <p>S/ 3.50</p>
+            <button onclick="agregarProducto('Gaseosa', 3.50)">Agregar</button>
+          </div>
+          <div class="card bebida">
+            <div class="estrella" onclick="agregarFavorito('Yogurt')">⭐</div>
+            <div class="emoji">🥛</div>
+            <h3>Yogurt</h3>
+            <p>S/ 3.00</p>
+            <button onclick="agregarProducto('Yogurt', 3.00)">Agregar</button>
+          </div>
+          <div class="card snack">
+            <div class="estrella" onclick="agregarFavorito('Pizza personal')">⭐</div>
+            <div class="emoji">🍕</div>
+            <h3>Pizza personal</h3>
+            <p>S/ 5.00</p>
+            <button onclick="agregarProducto('Pizza personal', 5.00)">Agregar</button>
+          </div>
+          <div class="card snack">
+            <div class="estrella" onclick="agregarFavorito('Empanada')">⭐</div>
+            <div class="emoji">🥟</div>
+            <h3>Empanada</h3>
+            <p>S/ 4.00</p>
+            <button onclick="agregarProducto('Empanada', 4.00)">Agregar</button>
+          </div>
+          <div class="card snack">
+            <div class="estrella" onclick="agregarFavorito('Galletas')">⭐</div>
+            <div class="emoji">🍪</div>
+            <h3>Galletas</h3>
+            <p>S/ 2.50</p>
+            <button onclick="agregarProducto('Galletas', 2.50)">Agregar</button>
+          </div>
+          <div class="card fruta">
+            <div class="estrella" onclick="agregarFavorito('Manzana')">⭐</div>
+            <div class="emoji">🍎</div>
+            <h3>Manzana</h3>
+            <p>S/ 2.00</p>
+            <button onclick="agregarProducto('Manzana', 2.00)">Agregar</button>
+          </div>
+          <div class="card fruta">
+            <div class="estrella" onclick="agregarFavorito('Plátano')">⭐</div>
+            <div class="emoji">🍌</div>
+            <h3>Plátano</h3>
+            <p>S/ 1.50</p>
+            <button onclick="agregarProducto('Plátano', 1.50)">Agregar</button>
+          </div>
+          <div class="card fruta">
+            <div class="estrella" onclick="agregarFavorito('Naranja')">⭐</div>
+            <div class="emoji">🍊</div>
+            <h3>Naranja</h3>
+            <p>S/ 2.00</p>
+            <button onclick="agregarProducto('Naranja', 2.00)">Agregar</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- PANEL DE PEDIDOS LATERAL -->
+    <aside class="pedido">
+      <h2>🛒 Mi Pedido</h2>
+      <ul id="listaPedidos"></ul>
+      <h3>Total: S/ <span id="total">0.00</span></h3>
+      <button class="btn-finalizar" onclick="finalizarPedido()">Finalizar Pedido</button>
+      <button class="btn-vaciar" onclick="vaciarCarrito()">Vaciar Carrito</button>
+
+      <div class="funciona" style="margin-top: 30px;">
+        <h3>¿Cómo funciona?</h3>
+        <p>1️⃣ Elige productos</p>
+        <p>2️⃣ Realiza tu pedido</p>
+        <p>3️⃣ Recógelo en recreo</p>
+      </div>
+    </aside>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

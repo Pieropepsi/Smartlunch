@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historial - SmartLunch</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">🍱 SmartLunch</div>
+      <ul>
+        <li><a href="index.html">🏠 Inicio</a></li>
+        <li><a href="favoritos.html">⭐ Favoritos</a></li>
+        <li class="active"><a href="historial.html">📋 Historial</a></li>
+        <li><a href="configuracion.html">⚙️ Configuración</a></li>
+        <li><a href="#" onclick="cerrarSesion()">🚪 Cerrar Sesión</a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <h2>📋 Historial de Pedidos</h2>
+      <p class="subtitulo">Consulta todos los pedidos que has realizado anteriormente.</p>
+
+      <div class="banner-historial">
+        <div class="banner-emoji">📦</div>
+        <div>
+          <h3>Pedidos realizados</h3>
+          <p>Cada compra que realices quedará guardada para que puedas revisarla cuando quieras.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <ul id="historialPedidos">
+          <li>No hay pedidos realizados aún.</li>
+        </ul>
+      </div>
+
+      <div class="card" style="margin-top:20px;">
+        <h3>🎯 Tu actividad</h3>
+        <p>Aquí podrás ver qué productos compras con más frecuencia.</p>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

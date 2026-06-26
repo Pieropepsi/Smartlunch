@@ -1,0 +1,425 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#eef7ff;
+color: #333;
+overflow-x:hidden;
+transition: background 0.3s, color 0.3s;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+a{
+text-decoration:none;
+color:white;
+display:block;
+}
+
+.container{
+display:flex;
+min-height:100vh;
+}
+
+/* LOGIN */
+
+.login-container{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.login-card{
+background:white;
+padding:40px;
+border-radius:20px;
+width:380px;
+box-shadow:0 0 20px rgba(0,0,0,.08);
+text-align:center;
+}
+
+.login-card h1{
+color:#2994ff;
+margin-bottom:15px;
+transition: color 0.3s;
+}
+
+.login-card input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:1px solid #ddd;
+border-radius:10px;
+}
+
+.login-card button{
+width:100%;
+padding:12px;
+background:#2994ff;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+margin-top:10px;
+transition: background 0.3s;
+}
+
+.cuentas{
+margin-top:20px;
+font-size:14px;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:250px;
+background:#4da6ff;
+color:white;
+padding:30px 20px;
+transition: background 0.3s;
+}
+
+.logo{
+font-size:30px;
+font-weight:700;
+text-align:center;
+margin-bottom:40px;
+}
+
+.sidebar ul{
+list-style:none;
+}
+
+.sidebar li{
+padding:15px;
+margin-bottom:10px;
+border-radius:12px;
+cursor:pointer;
+transition:.3s;
+}
+
+.sidebar li:hover{
+background:rgba(255,255,255,.2);
+}
+
+.active{
+background:rgba(255,255,255,.2);
+}
+
+/* MAIN */
+
+.main{
+flex:1;
+padding:30px;
+}
+
+.search input{
+width:100%;
+padding:15px;
+border:none;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.08);
+background: white;
+color: #333;
+transition: background 0.3s, color 0.3s;
+}
+
+/* HERO */
+
+.hero{
+background:white;
+padding:30px;
+border-radius:25px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:20px;
+box-shadow:0 0 15px rgba(0,0,0,.08);
+transition: background 0.3s;
+}
+
+.hero-text h1{
+font-size:42px;
+color:#2994ff;
+margin-bottom:15px;
+transition: color 0.3s;
+}
+
+.hero-text p{
+color:#666;
+margin-bottom:20px;
+transition: color 0.3s;
+}
+
+.hero button{
+background:#4da6ff;
+color:white;
+border:none;
+padding:12px 25px;
+border-radius:12px;
+cursor:pointer;
+transition: background 0.3s;
+}
+
+.hero-img{
+font-size:100px;
+}
+
+/* CATEGORIAS */
+
+.categorias{
+display:flex;
+gap:15px;
+margin:25px 0;
+flex-wrap:wrap;
+}
+
+.categoria{
+background:white;
+color: #333;
+padding:15px 25px;
+border-radius:15px;
+cursor:pointer;
+box-shadow:0 0 10px rgba(0,0,0,.08);
+transition: background 0.3s, color 0.3s;
+}
+
+/* PRODUCTOS */
+
+#productos h2{
+color:#2994ff;
+margin-bottom:20px;
+transition: color 0.3s;
+}
+
+.productos-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:20px;
+box-shadow:0 0 12px rgba(0,0,0,.08);
+position:relative;
+transition: background 0.3s, color 0.3s;
+}
+
+.emoji{
+font-size:60px;
+text-align:center;
+margin-bottom:10px;
+}
+
+.card h3{
+margin-bottom:10px;
+}
+
+.card p{
+margin-bottom:15px;
+color:#2994ff;
+font-weight:600;
+transition: color 0.3s;
+}
+
+.card button{
+background:#4da6ff;
+color:white;
+border:none;
+padding:10px 20px;
+border-radius:10px;
+cursor:pointer;
+transition: background 0.3s;
+}
+
+.estrella{
+position:absolute;
+top:10px;
+right:15px;
+font-size:24px;
+cursor:pointer;
+}
+
+/* PANEL PEDIDO */
+
+.pedido{
+width:320px;
+background:white;
+padding:25px;
+box-shadow:-5px 0 15px rgba(0,0,0,.08);
+transition: background 0.3s, color 0.3s;
+}
+
+.pedido h2{
+color:#2994ff;
+margin-bottom:20px;
+transition: color 0.3s;
+}
+
+#listaPedidos{
+padding-left:20px;
+margin-bottom:20px;
+}
+
+.btn-finalizar,
+.btn-vaciar{
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+margin-top:10px;
+color:white;
+}
+
+.btn-finalizar{
+background:#2994ff;
+transition: background 0.3s;
+}
+
+.btn-vaciar{
+background:#ff5a5a;
+}
+
+.funciona h3{
+margin-top: 15px;
+margin-bottom: 10px;
+color: inherit;
+}
+
+.funciona p{
+margin-bottom: 5px;
+color: inherit;
+}
+
+/* BANNERS */
+
+.banner-favoritos,
+.banner-historial,
+.banner-config{
+background:white;
+padding:25px;
+border-radius:20px;
+display:flex;
+align-items:center;
+gap:20px;
+margin-bottom:20px;
+box-shadow:0 0 12px rgba(0,0,0,.08);
+transition: background 0.3s;
+}
+
+.banner-emoji{
+font-size:60px;
+}
+
+.subtitulo{
+margin:10px 0 20px;
+color:#666;
+transition: color 0.3s;
+}
+
+/* 🌙 MODO OSCURO PREMIUM INTEGRAL 🌙 */
+
+.dark-mode{
+background:#121212; /* Fondo general oscuro sutil */
+color:#e0e0e0;      /* Texto principal claro */
+}
+
+.dark-mode .main,
+.dark-mode .pedido{
+background:#121212;
+}
+
+/* CAMBIO INTEGRAL: La barra lateral cambia a un gris-azul oscuro espectacular */
+.dark-mode .sidebar {
+background: #1e2530; 
+}
+
+/* Tarjetas y contenedores */
+.dark-mode .card,
+.dark-mode .hero,
+.dark-mode .banner-favoritos,
+.dark-mode .banner-historial,
+.dark-mode .banner-config{
+background:#1e1e1e;
+color:#ffffff;
+}
+
+/* Textos secundarios */
+.dark-mode .hero-text p,
+.dark-mode .subtitulo,
+.dark-mode #fav-vacio p {
+color:#a5a5a5;
+}
+
+/* CAMBIO INTEGRAL: Los títulos celestes ahora son un azul eléctrico suave y legible */
+.dark-mode .hero-text h1,
+.dark-mode #productos h2,
+.dark-mode .pedido h2,
+.dark-mode .card p,
+.dark-mode .login-card h1,
+.dark-mode #contenedor-favoritos h3 {
+color: #5bb0ff; 
+}
+
+/* CAMBIO INTEGRAL: Botones de acción principales (reemplazo del celeste encendido) */
+.dark-mode .hero button,
+.dark-mode .card button,
+.dark-mode .btn-finalizar,
+.dark-mode .login-card button {
+background: #2b7fff;
+color: #ffffff;
+}
+
+/* Hover de los botones para que tengan feedback */
+.dark-mode .hero button:hover,
+.dark-mode .card button:hover,
+.dark-mode .btn-finalizar:hover {
+background: #1a6ff5;
+}
+
+/* Buscador adaptado */
+.dark-mode .search input {
+background: #1e1e1e;
+color: #ffffff;
+border: 1px solid #333;
+}
+.dark-mode .search input::placeholder {
+color: #777;
+}
+
+/* Botones de categorías adaptados */
+.dark-mode .categoria {
+background: #1e1e1e;
+color: #ffffff;
+}
+.dark-mode .categoria:hover {
+background: #2a2a2a;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+.container{
+flex-direction:column;
+}
+.sidebar{
+width:100%;
+}
+.pedido{
+width:100%;
+}
+.hero{
+flex-direction:column;
+text-align:center;
+}
+}

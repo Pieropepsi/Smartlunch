@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - SmartLunch</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    .login-card {
+      background: #ffffff;
+      color: #1e293b !important;
+      padding: 40px 35px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+    }
+    .login-card h2 { color: #0f172a !important; font-weight: 700; margin-bottom: 12px; }
+    .login-card .login-subtitulo { color: #64748b !important; font-size: 14px; line-height: 1.6; margin-bottom: 25px; }
+    .login-card .form-group { margin-bottom: 20px; }
+    .login-card .form-group label { display: block; color: #334155 !important; font-weight: 600; font-size: 14px; margin-bottom: 8px; }
+    .btn-login { margin-top: 10px; margin-bottom: 20px; }
+    .login-card .login-footer p { color: #64748b !important; margin-top: 5px; }
+    .login-card .login-footer a { color: #2b7fff !important; font-weight: 600; text-decoration: none; display: inline-block; margin-top: 4px; }
+
+    /* Ocultar campos de perfil en modo login por defecto */
+    .registro-extra { display: none; }
+
+    /* selectores custom dark/light */
+    .selector-registro {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background-color: #ffffff;
+      color: #000000;
+      font-size: 14px;
+      outline: none;
+    }
+
+    body.dark-mode .login-card { background: #1e1e24 !important; border: 1px solid #334155; }
+    body.dark-mode .login-card h2 { color: #ffffff !important; }
+    body.dark-mode .login-card .login-subtitulo { color: #94a3b8 !important; }
+    body.dark-mode .login-card .form-group label { color: #cbd5e1 !important; }
+    body.dark-mode .login-card .login-footer p { color: #94a3b8 !important; }
+    body.dark-mode .login-card .login-footer a { color: #38bdf8 !important; }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="login-card">
+      <h2 id="login-titulo">🍱 SmartLunch</h2>
+      <p class="login-subtitulo" id="login-subtitulo">Inicia sesión para gestionar o pedir tu almuerzo escolar</p>
+
+      <div class="form-group">
+        <label for="usuario">👤 Usuario o Correo</label>
+        <input type="text" id="usuario" placeholder="Ej: alumno123 o dueñofijo">
+      </div>
+
+      <!-- CAMPOS EXTRA PARA PERFIL (SÓLO REGISTRO REFORMULADO DINÁMICAMENTE) -->
+      <div class="form-group registro-extra" id="campo-grado">
+        <label style="text-align: center; display: block;">🎓 Grado y Sección</label>
+        <div style="display: flex; gap: 8px; justify-content: center;">
+          <!-- Nivel -->
+          <select id="regNivel" onchange="actualizarGrados()" class="selector-registro">
+            <option value="">Nivel...</option>
+            <option value="primaria">Primaria</option>
+            <option value="secundaria">Secundaria</option>
+          </select>
+
+          <!-- Grado (Se genera dinámicamente) -->
+          <select id="regGrado" class="selector-registro">
+            <option value="">Grado...</option>
+          </select>
+
+          <!-- Sección (Actualizado solo hasta C) -->
+          <select id="regSeccion" class="selector-registro">
+            <option value="">Sec...</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group registro-extra" id="campo-correo">
+        <label for="correo">✉️ Correo Electrónico</label>
+        <input type="email" id="correo" placeholder="Ej: alumno@smartlunch.com">
+      </div>
+
+      <div class="form-group">
+        <label for="clave">🔒 Contraseña</label>
+        <input type="password" id="clave" placeholder="••••••••">
+      </div>
+
+      <button class="btn-login" id="btn-principal" onclick="manejarAccion()">Iniciar Sesión</button>
+
+      <div class="login-footer" id="login-footer">
+        <p>¿Eres un alumno nuevo?</p>
+        <a href="#" onclick="cambiarAModoRegistro(event)">Regístrate aquí</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let esModoRegistro = false;
+
+    // Control dinámico de grados para Primaria y Secundaria
+    function actualizarGrados() {
+      const nivel = document.getElementById("regNivel").value;
+      const comboGrado = document.getElementById("regGrado");
+      
+      if (!comboGrado) return;
+      
+      comboGrado.innerHTML = '<option value="">Grado...</option>';
+      
+      let maxGrado = 0;
+      if (nivel === "primaria") {
+        maxGrado = 6;
+      } else if (nivel === "secundaria") {
+        maxGrado = 5;
+      } else {
+        return;
+      }
+      
+      for (let i = 1; i <= maxGrado; i++) {
+        let opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = `${i}°`;
+        comboGrado.appendChild(opt);
+      }
+    }
+
+    function manejarAccion() {
+      let usuarioInput = document.getElementById("usuario").value.trim();
+      let claveInput = document.getElementById("clave").value.trim();
+
+      if (usuarioInput === "" || claveInput === "") {
+        alert("⚠️ Por favor, completa los campos de usuario y contraseña.");
+        return;
+      }
+
+      if (esModoRegistro) {
+        let nivelSel = document.getElementById("regNivel").value;
+        let gradoSel = document.getElementById("regGrado").value;
+        let seccionSel = document.getElementById("regSeccion").value;
+        let correoInput = document.getElementById("correo").value.trim();
+
+        if (nivelSel === "" || gradoSel === "" || seccionSel === "" || correoInput === "") {
+          alert("⚠️ Por favor, selecciona tu Nivel, Grado, Sección y escribe tu Correo.");
+          return;
+        }
+
+        // Estructuramos el string final formateado para guardar (Ej: "5° Secundaria A")
+        let nivelTexto = nivelSel.charAt(0).toUpperCase() + nivelSel.slice(1);
+        let gradoCompletoFormato = `${gradoSel}° ${nivelTexto} ${seccionSel}`;
+
+        ejecutarRegistro(usuarioInput, claveInput, gradoCompletoFormato, correoInput);
+      } else {
+        ejecutarLogin(usuarioInput, claveInput);
+      }
+    }
+
+    function ejecutarLogin(usuarioInput, claveInput) {
+      const DUEÑO_USER = "dueñofijo";
+      const DUEÑO_PASS = "quiosco2026"; 
+
+      if (usuarioInput === DUEÑO_USER && claveInput === DUEÑO_PASS) {
+        localStorage.setItem("tipoUsuario", "quiosco");
+        localStorage.setItem("usuarioActual", "Administrador");
+        window.location.href = "quiosco.html";
+        return;
+      }
+
+      let usuariosRegistrados = JSON.parse(localStorage.getItem("usuariosSmartLunch")) || [];
+      let usuarioEncontrado = usuariosRegistrados.find(
+        user => user.username.toLowerCase() === usuarioInput.toLowerCase() && user.clave === claveInput
+      );
+
+      if (usuarioEncontrado) {
+        localStorage.setItem("tipoUsuario", "alumno");
+        localStorage.setItem("usuarioActual", usuarioEncontrado.username);
+        localStorage.setItem("perfilGrado", usuarioEncontrado.grado || "No especificado");
+        localStorage.setItem("perfilCorreo", usuarioEncontrado.correo || "No especificado");
+        window.location.href = "index.html"; 
+      } else {
+        alert("❌ Usuario o contraseña incorrectos.");
+      }
+    }
+
+    function ejecutarRegistro(usuarioInput, claveInput, gradoInput, correoInput) {
+      let usuariosRegistrados = JSON.parse(localStorage.getItem("usuariosSmartLunch")) || [];
+      let existe = usuariosRegistrados.some(user => user.username.toLowerCase() === usuarioInput.toLowerCase());
+      
+      if (existe || usuarioInput.toLowerCase() === "dueñofijo") {
+        alert("⚠️ Ese nombre de usuario ya está ocupado.");
+        return;
+      }
+
+      usuariosRegistrados.push({ 
+        username: usuarioInput, 
+        clave: claveInput,
+        grado: gradoInput,
+        correo: correoInput
+      });
+      
+      localStorage.setItem("usuariosSmartLunch", JSON.stringify(usuariosRegistrados));
+      alert(`✅ ¡Registro de perfil exitoso!\nInicia sesión con tu nueva cuenta.`);
+      cambiarAModoLogin(null);
+    }
+
+    function cambiarAModoRegistro(e) {
+      if(e) e.preventDefault();
+      esModoRegistro = true;
+
+      document.getElementById("login-titulo").textContent = "📝 Registro de Alumno";
+      document.getElementById("login-subtitulo").textContent = "Completa tus datos para crear tu perfil y tu cuenta";
+      document.getElementById("btn-principal").textContent = "Registrarse";
+      
+      document.querySelectorAll(".registro-extra").forEach(el => el.style.display = "block");
+      
+      document.getElementById("login-footer").innerHTML = `<p>¿Ya tienes una cuenta?</p><a href="#" onclick="cambiarAModoLogin(event)">Inicia sesión aquí</a>`;
+      
+      document.getElementById("usuario").value = "";
+      document.getElementById("clave").value = "";
+      document.getElementById("regNivel").value = "";
+      document.getElementById("regGrado").innerHTML = '<option value="">Grado...</option>';
+      document.getElementById("regSeccion").value = "";
+      document.getElementById("correo").value = "";
+    }
+
+    function cambiarAModoLogin(e) {
+      if(e) e.preventDefault();
+      esModoRegistro = false;
+
+      document.getElementById("login-titulo").textContent = "🍱 SmartLunch";
+      document.getElementById("login-subtitulo").textContent = "Inicia sesión para gestionar o pedir tu almuerzo escolar";
+      document.getElementById("btn-principal").textContent = "Iniciar Sesión";
+      
+      document.querySelectorAll(".registro-extra").forEach(el => el.style.display = "none");
+      
+      document.getElementById("login-footer").innerHTML = `<p>¿Eres un alumno nuevo?</p><a href="#" onclick="cambiarAModoRegistro(event)">Regístrate aquí</a>`;
+    }
+
+    window.addEventListener("load", () => {
+      if (localStorage.getItem("tema") === "oscuro") document.body.classList.add("dark-mode");
+    });
+  </script>
+</body>
+</html>

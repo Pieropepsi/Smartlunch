@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuración - SmartLunch</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+      <div class="logo"> 🍱 SmartLunch </div>
+      <ul>
+        <li>
+          <a href="index.html"> 🏠 Inicio </a>
+        </li>
+        <li>
+          <a href="#"> ⭐ Favoritos </a>
+        </li>
+        <li>
+          <a href="#"> 📄 Historial </a>
+        </li>
+        <li class="active">
+          <a href="configuracion.html"> ⚙️ Configuración </a>
+        </li>
+        <li>
+          <a href="#" onclick="cerrarSesion()"> 🚪 Cerrar Sesión </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main">
+
+      <h2>⚙️ Configuración</h2>
+      <p class="subtitulo">Personaliza tu experiencia en SmartLunch.</p>
+
+      <!-- BANNER DE CUENTA -->
+      <div class="banner-config">
+        <div class="banner-emoji"> ⚙️ </div>
+        <div>
+          <h3>Tu cuenta SmartLunch</h3>
+          <p>Modifica la apariencia y preferencias de la plataforma.</p>
+        </div>
+      </div>
+
+      <!-- CARD 1: PERFIL (Ahora dinámico con tus estilos) -->
+      <div class="card">
+        <h3>👤 Perfil</h3>
+        <br>
+        <p style="margin-bottom: 12px; font-weight: 600; color: #2b7fff; font-size: 15px;">
+          Nombre: <span id="perfil-nombre" style="color: #2b7fff; font-weight: 600;">Estudiante</span>
+        </p>
+        <p style="margin-bottom: 12px; font-weight: 600; color: #2b7fff; font-size: 15px;">
+          Grado: <span id="perfil-grado" style="color: #2b7fff; font-weight: 600;">5° Secundaria</span>
+        </p>
+        <p style="margin-bottom: 12px; font-weight: 600; color: #2b7fff; font-size: 15px;">
+          Correo: <span id="perfil-correo" style="color: #2b7fff; font-weight: 600;">estudiante@smartlunch.com</span>
+        </p>
+      </div>
+
+      <br>
+
+      <!-- CARD 2: APARIENCIA (RESTABLECIDO Y FUNCIONAL) -->
+      <div class="card">
+        <h3>🎨 Apariencia</h3>
+        <br>
+        <p style="margin-bottom: 15px; font-size: 14px; color: #94a3b8;">Elige el tema que más te guste:</p>
+        <div style="display: flex; gap: 10px;">
+          <button onclick="cambiarTema('oscuro')" style="padding: 10px 20px; cursor: pointer;">🌙 Modo Oscuro</button>
+          <button onclick="cambiarTema('claro')" style="padding: 10px 20px; cursor: pointer;">☀️ Modo Claro</button>
+        </div>
+      </div>
+
+      <br>
+
+      <!-- CARD 3: PREFERENCIAS (RESTABLECIDO) -->
+      <div class="card">
+        <h3>🍱 Preferencias</h3>
+        <br>
+        <p style="font-size: 14px; color: #94a3b8; line-height: 1.5;">
+          Personaliza tus productos favoritos y pedidos frecuentes.
+        </p>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- CONTROLADORES Y LOGICA SCRIPT -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // 1. Cargar el tema visual preferido guardado
+      if (localStorage.getItem("tema") === "oscuro" || !localStorage.getItem("tema")) {
+        document.body.classList.add("dark-mode");
+      } else {
+        document.body.classList.remove("dark-mode");
+      }
+
+      // 2. Extraer datos reales del alumno logueado
+      let usuarioActivo = localStorage.getItem("usuarioActual");
+
+      if (usuarioActivo) {
+        let usuariosRegistrados = JSON.parse(localStorage.getItem("usuariosSmartLunch")) || [];
+        let datosUsuario = usuariosRegistrados.find(user => user.username.toLowerCase() === usuarioActivo.toLowerCase());
+
+        if (datosUsuario) {
+          document.getElementById("perfil-nombre").textContent = datosUsuario.username;
+          document.getElementById("perfil-grado").textContent = datosUsuario.grado || "No especificado";
+          document.getElementById("perfil-correo").textContent = datosUsuario.correo || "No especificado";
+        } else {
+          // Valores estáticos de respaldo si no hay sesión activa
+          document.getElementById("perfil-nombre").textContent = usuarioActivo;
+          document.getElementById("perfil-grado").textContent = "5° Secundaria";
+          document.getElementById("perfil-correo").textContent = "estudiante@smartlunch.com";
+        }
+      }
+    });
+
+    // Función interactiva para cambiar los modos (Oscuro / Claro) al hacer clic
+    function cambiarTema(modo) {
+      if (modo === 'oscuro') {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('tema', 'oscuro');
+      } else {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('tema', 'claro');
+      }
+    }
+
+    function cerrarSesion() {
+      localStorage.removeItem("usuarioActual");
+      localStorage.removeItem("tipoUsuario");
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>

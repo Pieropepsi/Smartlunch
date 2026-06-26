@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Favoritos - SmartLunch</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">🍱 SmartLunch</div>
+      <ul>
+        <li><a href="index.html">🏠 Inicio</a></li>
+        <li class="active"><a href="favoritos.html">⭐ Favoritos</a></li>
+        <li><a href="historial.html">📋 Historial</a></li>
+        <li><a href="configuracion.html">⚙️ Configuración</a></li>
+        <li><a href="#" onclick="cerrarSesion()">🚪 Cerrar Sesión</a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <h2>⭐ Productos Favoritos</h2>
+      <p class="subtitulo">Guarda aquí tus productos preferidos y accede a ellos rápidamente.</p>
+
+      <div class="banner-favoritos">
+        <div class="banner-emoji">😍</div>
+        <div>
+          <h3>Tus mejores elecciones</h3>
+          <p>Los productos que marques con ⭐ aparecerán automáticamente clasificados aquí.</p>
+        </div>
+      </div>
+
+      <div id="contenedor-favoritos">
+        <!-- Sándwiches -->
+        <div class="seccion-favorito" id="sec-sandwich" style="display:none; margin-bottom: 30px;">
+          <h3 style="color:#2994ff; margin-bottom:15px;">🥪 Sándwiches Favoritos</h3>
+          <div class="productos-grid" id="lista-sandwich"></div>
+        </div>
+
+        <!-- Bebidas -->
+        <div class="seccion-favorito" id="sec-bebida" style="display:none; margin-bottom: 30px;">
+          <h3 style="color:#2994ff; margin-bottom:15px;">🧃 Bebidas Favoritas</h3>
+          <div class="productos-grid" id="lista-bebida"></div>
+        </div>
+
+        <!-- Snacks -->
+        <div class="seccion-favorito" id="sec-snack" style="display:none; margin-bottom: 30px;">
+          <h3 style="color:#2994ff; margin-bottom:15px;">🍕 Snacks Favoritos</h3>
+          <div class="productos-grid" id="lista-snack"></div>
+        </div>
+
+        <!-- Frutas -->
+        <div class="seccion-favorito" id="sec-fruta" style="display:none; margin-bottom: 30px;">
+          <h3 style="color:#2994ff; margin-bottom:15px;">🍎 Frutas Favoritas</h3>
+          <div class="productos-grid" id="lista-fruta"></div>
+        </div>
+
+        <!-- Mensaje vacío -->
+        <div class="card" id="fav-vacio">
+          <p style="text-align: center; color: #666;">
+            Aún no tienes productos favoritos. ¡Explora el menú de inicio y presiona la estrella ⭐!
+          </p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px;">
+        <h3>💡 Consejo SmartLunch</h3>
+        <p>Guarda tus snacks y bebidas favoritas para pedirlas más rápido durante el recreo.</p>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

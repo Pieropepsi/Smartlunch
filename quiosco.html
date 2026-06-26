@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel del Quiosco - SmartLunch</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- MENÚ LATERAL CORREGIDO -->
+    <aside class="sidebar">
+      <div class="logo"> 🍱 SmartLunch </div>
+      <ul>
+        <li class="active">
+          <a href="quiosco.html"> 👩‍🍳 Panel Quiosco </a>
+        </li>
+        <li>
+          <a href="#" onclick="cerrarSesion()"> 🚪 Cerrar Sesión </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main">
+
+      <h2>👩‍🍳 Panel del Quiosco</h2>
+      <p class="subtitulo">
+        Administra productos y revisa los pedidos de los estudiantes.
+      </p>
+
+      <!-- BANNER DE BIENVENIDA -->
+      <div class="banner-config">
+        <div class="banner-emoji"> 🏪 </div>
+        <div>
+          <h3>Centro de administración</h3>
+          <p> Gestiona productos, revisa pedidos y mantén actualizado el menú. </p>
+        </div>
+      </div>
+
+      <!-- GESTIÓN DE PRODUCTOS -->
+      <div class="card">
+        <h3>📦 Administración de Productos</h3>
+        <br>
+        <button onclick="agregarNuevoProducto()"> ➕ Agregar Producto </button>
+        <button onclick="editarProducto()"> ✏️ Editar Producto </button>
+        <button onclick="eliminarProducto()"> 🗑️ Eliminar Producto </button>
+      </div>
+
+      <br>
+
+      <!-- PEDIDOS RECIBIDOS CON CALENDARIO -->
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <h3>🛒 Pedidos Recibidos</h3>
+          <div style="font-size: 14px; display: flex; align-items: center; gap: 8px;">
+            <label for="filtroFecha" style="font-weight: 500;">📅 Fecha:</label>
+            <input type="date" id="filtroFecha" onchange="cambiarFechaFiltro()" style="padding: 4px 8px; border-radius: 6px; border: 1px solid #ccc; font-family: inherit;">
+          </div>
+        </div>
+        <p style="font-size: 12px; color: #888; margin-top: 5px;">Mostrando historial de: <span id="fecha-actual-pedidos" style="font-weight: 600; color: #2b7fff;">Hoy</span></p>
+        <br>
+        <ul id="pedidosQuiosco">
+          <li> Aún no hay pedidos recibidos. </li>
+        </ul>
+      </div>
+
+      <br>
+
+      <!-- RESUMEN AUTOMÁTICO DEL DÍA -->
+      <div class="card">
+        <h3>📊 Resumen del Día Seleccionado</h3>
+        <br>
+        <p style="margin-bottom: 8px;">✅ <strong>Total Recaudado:</strong> S/ <span id="resumenTotal" style="font-weight: 600; color: #2ecc71;">0.00</span></p>
+        <p style="margin-bottom: 8px;">✅ <strong>Pedidos Realizados y Despachados:</strong> <span id="resumenDespachados" style="font-weight: 600;">0</span></p>
+        <p style="margin-bottom: 8px;">✅ <strong>Control de Productos Vendidos:</strong> <span id="resumenProductos" style="color: #666; font-style: italic;">Ninguno aún</span></p>
+      </div>
+
+    </main>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
