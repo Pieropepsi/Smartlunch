@@ -1,4 +1,4 @@
-// 🛡️ 1. GUARDIÁN DE SEGURIDAD Y CONTROL DE ACCESO
+
 (function verificarAcceso() {
   const paginaActual = window.location.pathname.split("/").pop();
   if (paginaActual === "login.html" || paginaActual === "") return;
@@ -16,8 +16,9 @@
 })();
 
 // VARIABLES GLOBALES
-let total = 0;
-let carrito = [];
+let carrito = []; 
+let verTodo = false; // Controla si mostramos los 4 primeros o todo
+let fechaFiltroActual = obtenerFechaLocal();
 
 // Catálogo por defecto
 const catalogoInicial = {
@@ -39,7 +40,6 @@ if (!localStorage.getItem("catalogoProductos")) {
   localStorage.setItem("catalogoProductos", JSON.stringify(catalogoInicial));
 }
 
-// OBTENER FECHA ACTUAL EN FORMATO LOCAL (AAAA-MM-DD) sin desfases horarios
 function obtenerFechaLocal() {
   const d = new Date();
   const mes = '' + (d.getMonth() + 1);
@@ -48,90 +48,93 @@ function obtenerFechaLocal() {
   return [anio, mes.padStart(2, '0'), dia.padStart(2, '0')].join('-');
 }
 
-// Variable para controlar qué día está viendo el administrador (por defecto hoy)
-let fechaFiltroActual = obtenerFechaLocal();
-
-// 🛒 CARRITO DE COMPRAS (SISTEMA PREMIUM MEJORADO)
+// 🛒 CARRITO DE COMPRAS (SISTEMA MEJORADO)
 function agregarProducto(nombre, precio) {
-  carrito.push({ nombre: nombre, precio: parseFloat(precio) });
-  total += parseFloat(precio);
+  let productoExistente = carrito.find(item => item.nombre === nombre);
+  if (productoExistente) {
+    productoExistente.cantidad++;
+  } else {
+    carrito.push({ nombre: nombre, precio: parseFloat(precio), cantidad: 1 });
+  }
   actualizarDiseñoCarrito();
 }
 
-function eliminarUnSoloItem(indice) {
-  total -= carrito[indice].precio;
-  if (total < 0) total = 0;
-  carrito.splice(indice, 1);
+function restarProducto(nombre) {
+  let item = carrito.find(p => p.nombre === nombre);
+  if (item) {
+    item.cantidad--;
+    if (item.cantidad <= 0) {
+      carrito = carrito.filter(p => p.nombre !== nombre);
+    }
+  }
+  actualizarDiseñoCarrito();
+}
+
+function eliminarTotalProducto(nombre) {
+  carrito = carrito.filter(p => p.nombre !== nombre);
   actualizarDiseñoCarrito();
 }
 
 function vaciarCarrito() {
   carrito = [];
-  total = 0;
+  verTodo = false;
   actualizarDiseñoCarrito();
 }
 
 function actualizarDiseñoCarrito() {
   let lista = document.getElementById("listaPedidos");
   let totalTexto = document.getElementById("total");
-
   if (!lista) return;
+
   lista.innerHTML = "";
+  
+  // Calcular total real
+  let totalCalculado = carrito.reduce((sum, p) => sum + (p.precio * p.cantidad), 0);
+  if (totalTexto) totalTexto.textContent = totalCalculado.toFixed(2);
+
+  // Lógica de "Ver más"
+  let productosAMostrar = verTodo ? carrito : carrito.slice(0, 4);
 
   if (carrito.length === 0) {
-    lista.innerHTML = `
-      <div style="text-align: center; padding: 20px 10px; color: #64748b; font-style: italic; font-size: 14px;">
-        🛒 Tu pedido está vacío.
-      </div>
-    `;
-    if (totalTexto) totalTexto.textContent = "0.00";
+    lista.innerHTML = `<li style="text-align:center; padding: 20px 10px; color: #64748b; font-style: italic; font-size: 14px;">🛒 Tu pedido está vacío.</li>`;
     return;
   }
 
-  carrito.forEach((producto, indice) => {
+  productosAMostrar.forEach((producto) => {
     let item = document.createElement("li");
-    item.style.display = "flex";
-    item.style.justifyContent = "space-between";
-    item.style.alignItems = "center";
-    item.style.background = "#1e1e24"; 
-    item.style.padding = "10px 12px";
-    item.style.borderRadius = "10px";
-    item.style.marginBottom = "8px";
-    item.style.border = "1px solid #334155";
-    item.style.listStyle = "none";
+    item.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: #1e1e24; padding: 10px 12px; border-radius: 10px; margin-bottom: 8px; border: 1px solid #334155; list-style: none;";
 
     item.innerHTML = `
       <div style="display: flex; flex-direction: column; text-align: left; gap: 2px;">
         <span style="color: #ffffff; font-weight: 500; font-size: 14px;">🍽️ ${producto.nombre}</span>
-        <span style="color: #94a3b8; font-size: 13px;">S/ ${producto.precio.toFixed(2)}</span>
+        <span style="color: #94a3b8; font-size: 13px;">S/ ${(producto.precio * producto.cantidad).toFixed(2)}</span>
       </div>
-      <button onclick="eliminarUnSoloItem(${indice})" class="btn-eliminar-tacho" title="Quitar este producto" style="
-        background: transparent;
-        border: none;
-        color: #ef4444;
-        font-size: 15px;
-        cursor: pointer;
-        padding: 4px 8px;
-        border-radius: 6px;
-        transition: background 0.2s ease;
-      ">
-        🗑️
-      </button>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button onclick="restarProducto('${producto.nombre}')" style="background:#475569; border:none; color:white; padding: 2px 8px; border-radius:4px; cursor:pointer;">-</button>
+        <span style="color:white; min-width: 20px; text-align: center;">${producto.cantidad}</span>
+        <button onclick="agregarProducto('${producto.nombre}', ${producto.precio})" style="background:#2563eb; border:none; color:white; padding: 2px 8px; border-radius:4px; cursor:pointer;">+</button>
+        <button onclick="eliminarTotalProducto('${producto.nombre}')" style="background:transparent; border:none; color:#ef4444; cursor:pointer; font-size: 14px;">🗑️</button>
+      </div>
     `;
-
-    const btnTacho = item.querySelector(".btn-eliminar-tacho");
-    btnTacho.addEventListener("mouseover", () => btnTacho.style.background = "rgba(239, 68, 68, 0.12)");
-    btnTacho.addEventListener("mouseout", () => btnTacho.style.background = "transparent");
-
     lista.appendChild(item);
   });
 
-  if (totalTexto) totalTexto.textContent = total.toFixed(2);
+  // Botón "Ver más" si hay más de 4 productos
+  if (carrito.length > 4) {
+    let btnVerMas = document.createElement("button");
+    btnVerMas.textContent = verTodo ? "Ver menos" : "Ver más...";
+    btnVerMas.style.cssText = "width: 100%; background: transparent; border: 1px solid #334155; color: #94a3b8; padding: 5px; cursor: pointer; border-radius: 5px; font-size: 12px; margin-top: 5px;";
+    btnVerMas.onclick = () => {
+      verTodo = !verTodo;
+      actualizarDiseñoCarrito();
+    };
+    lista.appendChild(btnVerMas);
+  }
 }
 
-// 🚀 ENVIAR PEDIDO DESDE EL ALUMNO (CON HORA EXACTA INCLUYENDO SEGUNDOS)
+// 🚀 ENVIAR PEDIDO
 function finalizarPedido() {
-  if (total <= 0) {
+  if (carrito.length <= 0) {
     alert("⚠️ Debes agregar productos al carrito primero.");
     return;
   }
@@ -139,17 +142,15 @@ function finalizarPedido() {
   let historial = JSON.parse(localStorage.getItem("historial")) || [];
   let usuario = localStorage.getItem("usuarioActual") || "Estudiante";
   
-  let nombresProductos = carrito.map(p => p.nombre);
-
-  // Capturamos la hora exacta con segundos para evitar marcas repetidas
+  let productosDetallados = carrito.map(p => `${p.nombre} (x${p.cantidad})`);
   const ahora = new Date();
   const horaExacta = ahora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
   let nuevoPedido = {
     id: Date.now().toString(),
     usuario: usuario,
-    productos: nombresProductos,
-    total: total.toFixed(2),
+    productos: productosDetallados,
+    total: document.getElementById("total").textContent,
     hora: horaExacta,
     fechaKey: obtenerFechaLocal(),
     estado: "Pendiente"
@@ -174,7 +175,7 @@ function cambiarFechaFiltro() {
   }
 }
 
-// 👩‍🍳 INTERFAZ QUIOSCO: RENDERIZAR PEDIDOS Y RESUMEN DEL DÍA
+// 👩‍🍳 INTERFAZ QUIOSCO
 function cargarPedidosEnQuiosco() {
   let listaQuiosco = document.getElementById("pedidosQuiosco");
   if (!listaQuiosco) return;
@@ -192,7 +193,6 @@ function cargarPedidosEnQuiosco() {
       item.style.padding = "12px";
       item.style.borderBottom = "1px solid #ddd";
       item.style.listStyle = "none";
-      
       item.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <div>
@@ -208,38 +208,31 @@ function cargarPedidosEnQuiosco() {
       listaQuiosco.appendChild(item);
     });
   }
-
   actualizarResumenDelDia();
 }
 
-// ACCIÓN: MOVER PEDIDO DE PENDIENTES A DESPACHADOS (RESUMEN)
 function despacharPedido(id) {
   let historial = JSON.parse(localStorage.getItem("historial")) || [];
-  
   let pedidoIndex = historial.findIndex(p => p.id === id);
   if (pedidoIndex !== -1) {
     historial[pedidoIndex].estado = "Despachado";
     localStorage.setItem("historial", JSON.stringify(historial));
-    alert("📦 Pedido despachado. ¡Se sumó al Resumen del Día!");
+    alert("📦 Pedido despachado.");
     cargarPedidosEnQuiosco();
   }
 }
 
-// CALCULAR TOTALES DE VENTAS DEL DÍA SELECCIONADO
 function actualizarResumenDelDia() {
   let resumenTotal = document.getElementById("resumenTotal");
   let resumenDespachados = document.getElementById("resumenDespachados");
   let resumenProductos = document.getElementById("resumenProductos");
-
   if (!resumenTotal) return;
 
   let historial = JSON.parse(localStorage.getItem("historial")) || [];
-  
   let despachadosDelDia = historial.filter(p => p.fechaKey === fechaFiltroActual && p.estado === "Despachado");
 
   let dineroTotal = 0;
   let conteoProductos = {};
-
   despachadosDelDia.forEach(pedido => {
     dineroTotal += parseFloat(pedido.total);
     pedido.productos.forEach(prod => {
@@ -249,16 +242,14 @@ function actualizarResumenDelDia() {
 
   resumenTotal.textContent = dineroTotal.toFixed(2);
   resumenDespachados.textContent = despachadosDelDia.length;
-
   let productosListaHtml = [];
   for (let prod in conteoProductos) {
     productosListaHtml.push(`${prod} (${conteoProductos[prod]})`);
   }
-
   resumenProductos.textContent = productosListaHtml.length > 0 ? productosListaHtml.join(", ") : "Ninguno aún";
 }
 
-// ⭐ FAVORITOS (VISTA ALUMNO)
+// ⭐ FAVORITOS
 function agregarFavorito(nombre) {
   let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
   if (favoritos.includes(nombre)) {
@@ -319,13 +310,12 @@ function cargarFavoritos() {
 
 function eliminarFavorito(nombre) {
   let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
-  // Corregido: 'favorites' -> 'favoritos'
-  favoritos = favoritos.filter(item => item !== nombre); 
+  favoritos = favoritos.filter(item => item !== nombre);
   localStorage.setItem("favoritos", JSON.stringify(favoritos));
   cargarFavoritos();
 }
 
-// 📋 HISTORIAL (DISEÑO PREMIUM MODULAR CON TARJETAS)
+// 📋 HISTORIAL
 function cargarHistorial() {
   let lista = document.getElementById("historialPedidos");
   if (!lista) return;
@@ -337,29 +327,13 @@ function cargarHistorial() {
   let misPedidos = historial.filter(p => p.usuario === miUsuario);
 
   if (misPedidos.length === 0) {
-    lista.innerHTML = `
-      <div style="text-align: center; padding: 20px; color: #64748b; font-style: italic; font-size: 14px;">
-        📋 No hay pedidos realizados aún.
-      </div>
-    `;
+    lista.innerHTML = `<div style="text-align: center; padding: 20px; color: #64748b; font-style: italic; font-size: 14px;">📋 No hay pedidos realizados aún.</div>`;
     return;
   }
 
   misPedidos.reverse().forEach(function (p) {
     let item = document.createElement("li");
-    
-    // Estilos de tarjeta modular premium alineados con el modo oscuro
-    item.style.display = "flex";
-    item.style.justifyContent = "space-between";
-    item.style.alignItems = "center";
-    item.style.background = "#1e1e24";
-    item.style.padding = "14px 16px";
-    item.style.borderRadius = "12px";
-    item.style.marginBottom = "10px";
-    item.style.border = "1px solid #334155";
-    item.style.listStyle = "none";
-
-    // Configuración visual del badge de estado
+    item.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: #1e1e24; padding: 14px 16px; borderRadius: 12px; marginBottom: 10px; border: 1px solid #334155; list-style: none;";
     let esEntregado = p.estado === "Despachado";
     let badgeColor = esEntregado ? "#2ecc71" : "#f1c40f";
     let badgeFondo = esEntregado ? "rgba(46, 204, 113, 0.15)" : "rgba(241, 196, 15, 0.15)";
@@ -367,61 +341,39 @@ function cargarHistorial() {
 
     item.innerHTML = `
       <div style="display: flex; flex-direction: column; text-align: left; gap: 4px;">
-        <span style="color: #ffffff; font-weight: 600; font-size: 14px;">
-          📦 ${p.productos.join(", ")}
-        </span>
+        <span style="color: #ffffff; font-weight: 600; font-size: 14px;">📦 ${p.productos.join(", ")}</span>
         <div style="display: flex; align-items: center; gap: 12px; color: #94a3b8; font-size: 12px;">
-          <span>🕒 ${p.hora}</span>
-          <span style="color: #64748b;">•</span>
-          <span>📅 ${p.fechaKey}</span>
+          <span>🕒 ${p.hora}</span><span style="color: #64748b;">•</span><span>📅 ${p.fechaKey}</span>
         </div>
       </div>
-      <div style="display: flex; align-items: center; gap: 15px;">
-        <span style="color: #ffffff; font-weight: 700; font-size: 15px;">S/ ${p.total}</span>
-        <span style="
-          background: ${badgeFondo}; 
-          color: ${badgeColor}; 
-          padding: 4px 10px; 
-          border-radius: 6px; 
-          font-size: 12px; 
-          font-weight: 600;
-        ">
-          ${badgeTexto}
-        </span>
-      </div>
+      <span style="background: ${badgeFondo}; color: ${badgeColor}; padding: 4px 10px; border-radius: 6px; font-size: 12px;">${badgeTexto}</span>
     `;
-    
     lista.appendChild(item);
   });
 }
 
-// 🛠️ MANTENIMIENTO DEL CATÁLOGO
+// 🛠️ MANTENIMIENTO
 function agregarNuevoProducto() {
-  let nombre = prompt("✍️ Ingresa el NOMBRE del nuevo producto:");
+  let nombre = prompt("✍️ Nombre:");
   if (!nombre) return;
-  let precio = prompt("💰 Ingresa el PRECIO (Ejemplo: 4.50):");
+  let precio = prompt("💰 Precio:");
   if (!precio) return;
-  let emoji = prompt("🍎 Ingresa un EMOJI para el producto:");
+  let emoji = prompt("🍎 Emoji:");
   if (!emoji) return;
-  let categoria = prompt("📁 Ingresa la CATEGORÍA (sandwich, bebida, snack, fruta):").toLowerCase();
-
+  let categoria = prompt("📁 Categoría (sandwich, bebida, snack, fruta):").toLowerCase();
   let catalogo = JSON.parse(localStorage.getItem("catalogoProductos"));
   catalogo[nombre] = { emoji: emoji, categoria: categoria, precio: parseFloat(precio).toFixed(2) };
   localStorage.setItem("catalogoProductos", JSON.stringify(catalogo));
-  alert(`✅ ¡"${nombre}" ha sido añadido al menú!`);
 }
 
-// FILTROS
 function filtrar(tipo) {
-  let productos = document.querySelectorAll(".productos-grid .card");
-  productos.forEach(card => card.style.display = card.classList.contains(tipo) ? "block" : "none");
+  document.querySelectorAll(".productos-grid .card").forEach(card => card.style.display = card.classList.contains(tipo) ? "block" : "none");
 }
 
 function mostrarTodos() {
   document.querySelectorAll(".productos-grid .card").forEach(card => card.style.display = "block");
 }
 
-// INICIALIZADOR GENERAL
 document.addEventListener("DOMContentLoaded", function () {
   let buscador = document.getElementById("buscador");
   if (buscador) {
@@ -433,14 +385,9 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
-
   let inputFecha = document.getElementById("filtroFecha");
   if (inputFecha) inputFecha.value = fechaFiltroActual;
-
-  cargarFavoritos();
-  cargarHistorial();
-  cargarPedidosEnQuiosco();
-  actualizarDiseñoCarrito();
+  cargarFavoritos(); cargarHistorial(); cargarPedidosEnQuiosco(); actualizarDiseñoCarrito();
 });
 
 function cerrarSesion() {
@@ -451,34 +398,21 @@ function cerrarSesion() {
 
 function activarModoOscuro() { document.body.classList.add("dark-mode"); localStorage.setItem("tema", "oscuro"); }
 function activarModoClaro() { document.body.classList.remove("dark-mode"); localStorage.setItem("tema", "claro"); }
-window.addEventListener("load", () => { if (localStorage.getItem("tema") === "oscuro") document.body.classList.add("dark-mode"); });
-// =========================================================================
-// 🔄 CONTROL DINÁMICO DE GRADOS (PRIMARIA 1-6 / SECUNDARIA 1-5)
-// =========================================================================
+
 function actualizarGrados() {
   const nivel = document.getElementById("regNivel").value;
   const comboGrado = document.getElementById("regGrado");
-  
   if (!comboGrado) return;
-  
-  // Limpiamos las opciones previas dejando solo el marcador de posición
   comboGrado.innerHTML = '<option value="">Grado...</option>';
-  
-  let totalGrados = 0;
-  
-  if (nivel === "primaria") {
-    totalGrados = 6; // Configura de 1° a 6° Primaria
-  } else if (nivel === "secundaria") {
-    totalGrados = 5; // Configura de 1° a 5° Secundaria
-  } else {
-    return; // Si no hay nivel seleccionado, termina la función
-  }
-  
-  // Inyectamos las opciones numéricas dinámicamente
+  let totalGrados = nivel === "primaria" ? 6 : (nivel === "secundaria" ? 5 : 0);
   for (let i = 1; i <= totalGrados; i++) {
     let opcion = document.createElement("option");
-    opcion.value = i;
-    opcion.textContent = `${i}°`;
-    comboGrado.appendChild(opcion);
+    opcion.value = i; opcion.textContent = `${i}°`; comboGrado.appendChild(opcion);
   }
 }
+// Recuperar el tema guardado al cargar la página
+window.addEventListener("load", () => {
+  if (localStorage.getItem("tema") === "oscuro") {
+    document.body.classList.add("dark-mode");
+  }
+});
