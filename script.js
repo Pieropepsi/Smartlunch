@@ -319,7 +319,8 @@ function cargarFavoritos() {
 
 function eliminarFavorito(nombre) {
   let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
-  favoritos = favorites.filter(item => item !== nombre);
+  // Corregido: 'favorites' -> 'favoritos'
+  favoritos = favoritos.filter(item => item !== nombre); 
   localStorage.setItem("favoritos", JSON.stringify(favoritos));
   cargarFavoritos();
 }
