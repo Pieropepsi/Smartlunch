@@ -12,6 +12,15 @@ overflow-x:hidden;
 transition: background 0.3s, color 0.3s;
 }
 
+strong{
+font-weight:700;
+color:#222;
+}
+
+.dark-mode strong{
+color:#ffffff;
+}
+
 html{
 scroll-behavior:smooth;
 }
@@ -110,7 +119,7 @@ background:rgba(255,255,255,.2);
 }
 
 .active{
-background:rgba(255,255,255,.2);
+background:rgba(0, 0, 0, 0.2);
 }
 
 /* MAIN */
@@ -431,9 +440,107 @@ text-align:center;
     margin: 0 auto;  
 }
 .logo-sidebaro {
-    max-width: 100%; 
     width:     400px;    
     height: auto;    
-    display: block;
+     max-width: 100%; 
+   display: block;
     margin: 0 auto;  
+}
+
+/* Corrección para que las imágenes no rompan el diseño */
+.logo-sidebari {
+    width: 70px;      /* Tamaño fijo para que los iconos sean pequeños */
+    height: auto;     /* Mantiene la proporción */
+    display: block;
+}
+
+/* Ajuste para que el contenedor de pedidos no se deforme */
+.pedido {
+    width: 320px;
+    flex-shrink: 0;   /* ¡Esto es clave! Evita que este panel se encoja o empuje otros elementos */
+    overflow-y: auto; /* Si el contenido es largo, permite hacer scroll en lugar de romper el layout */
+}
+
+/* Estilo para los textos dentro de la caja de "Cómo funciona" */
+.paso {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.paso-texto-grande {
+    font-size: 14px;
+    line-height: 1.2;
+}
+/* Espaciado para la sección de "Cómo funciona" */
+.caja-como-funciona {
+    margin-top: 60px;       /* Aumentamos de 30px a 60px para dar más "aire" */
+    padding-top: 20px;
+    border-top: 1px solid #ddd; 
+}
+/* --- CAMBIO DE FONDO A CELESTE --- */
+
+/* 1. Items de "Mi Pedido" (sidebar) */
+#listaPedidos li {
+    background-color: #8ec3f1 !important; /* Un celeste suave y claro */
+    color: #000000 !important;              /* Texto oscuro para buena legibilidad */
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 8px;
+    border: 1px solid #8ec3f1;           /* Un borde sutil que combina */
+}
+
+/* 2. Items de "Historial de Pedidos" */
+#pedidosQuiosco li {
+    background-color: #8ec3f1 !important; /* El mismo celeste */
+    color: #000000 !important;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #8ec3f1;
+}
+
+/* 3. Ajuste de textos dentro de estos elementos para que resalten */
+#listaPedidos li strong, 
+#pedidosQuiosco li strong {
+    color: #5ea8f3 !important;            /* Azul más fuerte para resaltar títulos */
+}
+/* Forzar que todo el texto dentro de los pedidos sea negro intenso */
+#listaPedidos li, 
+#listaPedidos li span, 
+#pedidosQuiosco li, 
+#pedidosQuiosco li span {
+    color: #000000 !important; /* Negro */
+}
+
+/* Si quieres que los títulos de los productos resalten un poco más, 
+   puedes dejar estos en un azul oscuro profesional */
+#listaPedidos li strong, 
+#pedidosQuiosco li strong {
+    color: #000000 !important; /* También negro para uniformidad */
+}
+/* Forzar el cambio de color en el historial, ignorando el modo oscuro */
+body.dark-mode #pedidosQuiosco li, 
+#pedidosQuiosco li, 
+.card ul li {
+    background-color: #1c405f !important; /* Celeste */
+    color: #000000 !important;           /* Negro */
+    border: 1px solid #8ec3f1 !important;
+}
+
+/* Forzar que los textos internos sean negros también */
+#pedidosQuiosco li span, 
+#pedidosQuiosco li strong {
+    color: #000000 !important;
+}
+/* Esto fuerza a CUALQUIER elemento dentro de la lista (span, div, strong, etc.) a ser negro */
+#pedidosQuiosco li * {
+    color: #000000 !important;
+}
+/* Esta es la regla más agresiva: obliga a todo elemento dentro del historial a ser negro */
+#pedidosQuiosco, #pedidosQuiosco *, #pedidosQuiosco li, #pedidosQuiosco li * {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    text-shadow: none !important;
 }
