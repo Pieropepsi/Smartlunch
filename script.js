@@ -1,4 +1,4 @@
-
+// 🛡️ 1. GUARDIÁN DE SEGURIDAD Y CONTROL DE ACCESO
 (function verificarAcceso() {
   const paginaActual = window.location.pathname.split("/").pop();
   if (paginaActual === "login.html" || paginaActual === "") return;
@@ -541,4 +541,41 @@ function eliminarProductoAdmin(nombre) {
             alert("Error: La base de datos no está conectada.");
         }
     }
+}
+// --- SISTEMA DE AUTENTICACIÓN ---
+
+// 1. REGISTRAR USUARIO
+function registrarUsuario() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if(!email || !password) {
+        alert("Completa todos los campos");
+        return;
+    }
+
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            alert("¡Registro exitoso! Ya puedes iniciar sesión.");
+            console.log("Usuario creado:", userCredential.user.email);
+        })
+        .catch((error) => {
+            alert("Error al registrar: " + error.message);
+        });
+}
+
+// 2. INICIAR SESIÓN
+function iniciarSesion() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            alert("¡Bienvenido!");
+            // Redirigir al inicio
+            window.location.href = "index.html";
+        })
+        .catch((error) => {
+            alert("Error: " + error.message);
+        });
 }
