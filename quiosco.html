@@ -42,35 +42,7 @@
           <h3>Centro de administración</h3>
           <p> Gestiona productos, revisa pedidos y mantén actualizado el menú. </p>
         </div>
-      </div>
-
-      <!-- GESTIÓN DE PRODUCTOS -->
-      <div class="card">
-        <h3>📦 Administración de Productos</h3>
-        <br>
-        <button onclick="agregarNuevoProducto()"> ➕ Agregar Producto (Clásico) </button>
-        <button onclick="editarProducto()"> ✏️ Editar Producto </button>
-        <button onclick="eliminarProducto()"> 🗑️ Eliminar Producto </button>
-        
-        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #334155;">
-
-        <!-- NUEVA INTERFAZ VISUAL -->
-        <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
-          <input type="text" id="nuevoNombre" placeholder="Nombre" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc; flex: 1;">
-          <input type="number" id="nuevoPrecio" placeholder="Precio (S/)" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc; width: 80px;">
-          <select id="nuevaCategoria" style="padding: 8px; border-radius: 5px;">
-            <option value="sandwich">Sándwich</option>
-            <option value="bebida">Bebida</option>
-            <option value="snack">Snack</option>
-            <option value="fruta">Fruta</option>
-          </select>
-          <button onclick="guardarProducto()" style="background: #2563eb; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">➕ Guardar</button>
-        </div>
-        <ul id="listaInventario" style="list-style: none; padding: 0;"></ul>
-      </div>
-
-      <br>
-
+      </div>  
       <!-- PEDIDOS RECIBIDOS CON CALENDARIO -->
       <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
