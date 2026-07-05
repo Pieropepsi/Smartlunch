@@ -57,13 +57,6 @@
             <button onclick="agregarProducto('Sándwich de pollo', 6.00)">Agregar</button>
           </div>
           <div class="card sandwich">
-            <div class="estrella" onclick="agregarFavorito('Hot Dog')">⭐</div>
-            <div class="emoji">🌭</div>
-            <h3>Hot Dog</h3>
-            <p>S/ 4.50</p>
-            <button onclick="agregarProducto('Hot Dog', 4.50)">Agregar</button>
-          </div>
-          <div class="card sandwich">
             <div class="estrella" onclick="agregarFavorito('Sándwich Mixto')">⭐</div>
             <div class="emoji">🥪</div>
             <h3>Sándwich Mixto</h3>
@@ -142,17 +135,28 @@
       <h2>🛒 Mi Pedido</h2>
       <ul id="listaPedidos"></ul>
       <h3>Total: S/ <span id="total">0.00</span></h3>
-      <button class="btn-finalizar" onclick="finalizarPedido()">Finalizar Pedido</button>
-      <button class="btn-vaciar" onclick="vaciarCarrito()">Vaciar Carrito</button>
+<button class="btn-finalizar" onclick="finalizarPedido()">Finalizar Pedido</button>
+<button class="btn-vaciar" onclick="vaciarCarrito()">Vaciar Carrito</button>
 
-      <div class="funciona" style="margin-top: 30px;">
-        <h3>¿Cómo funciona?</h3>
-        <p>1️⃣ Elige productos</p>
-        <p>2️⃣ Realiza tu pedido</p>
-        <p>3️⃣ Recógelo en recreo</p>
-      </div>
-    </aside>
+<!-- Esta sección aparecerá debajo -->
+<div class="caja-como-funciona">
+    <h3></h3>
+  <h3>¿Cómo funciona?</h3>
+  <div class="paso">
+    <img src="img/carrito.png" class="logo-sidebari" alt="Elegir"> 
+    <strong class="paso-texto-grande">Elige tus productos</strong>
   </div>
+  <div class="paso">
+    <img src="img/bolsa.png" class="logo-sidebari" alt="Realizar">
+    <strong class="paso-texto-grande">Realiza tu pedido</strong>
+  </div>
+  <div class="paso">
+    <img src="img/bebidas.png" class="logo-sidebari" alt="Recoger">
+    <strong class="paso-texto-grande">Recógelo en el recreo</strong>
+  </div>
+</div>
+<!-- AGREGA ESTA LÍNEA AQUÍ -->
+</aside> 
 
   <script src="script.js"></script>
 </body>
@@ -179,3 +183,5 @@
   console.log("✅ Firebase conectado en Login");
 </script>
 </html>
+
+
