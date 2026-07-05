@@ -52,7 +52,7 @@
 
   <div class="login-container">
     <div class="login-card">
-      <h2 id="login-titulo">🍱 SmartLunch</h2>
+      <h2 id="login-titulo"><img src="img/SmartLunch.png" class="logo-sidebar"> SmartLunch</h2>
       <p class="login-subtitulo" id="login-subtitulo">Inicia sesión para gestionar o pedir tu almuerzo escolar</p>
 
       <div class="form-group">
@@ -249,5 +249,27 @@
       if (localStorage.getItem("tema") === "oscuro") document.body.classList.add("dark-mode");
     });
   </script>
+  <!-- INTEGRACIÓN DE FIREBASE EN LOGIN -->
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAuzfF9UFa-JQXR6as8w_8z9LuC2CZosa4",
+    authDomain: "mi-sitio-web-88c37.firebaseapp.com",
+    projectId: "mi-sitio-web-88c37",
+    storageBucket: "mi-sitio-web-88c37.firebasestorage.app",
+    messagingSenderId: "669526095854",
+    appId: "1:669526095854:web:693b4e98f1b1c8bb4340ff",
+    measurementId: "G-52C86M1J4D"
+  };
+
+  // Inicialización global
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  window.db = firebase.firestore();
+  console.log("✅ Firebase conectado en Login");
+</script>
 </body>
 </html>
