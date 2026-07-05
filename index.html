@@ -13,7 +13,7 @@
   <div class="container">
     <!-- BARRA LATERAL -->
     <aside class="sidebar">
-      <div class="logo">🍱 SmartLunch</div>
+      <div class="logo "><img src="img/SmartLunch.png" class="logo-sidebar"> SmartLunch</div>
       <ul>
         <li class="active"><a href="index.html">🏠 Inicio</a></li>
         <li><a href="favoritos.html">⭐ Favoritos</a></li>
@@ -35,7 +35,7 @@
           <p>Pide tus refrigerios con anticipación y evita las filas durante el recreo.</p>
           <button>Hacer Pedido</button>
         </div>
-        <div class="hero-img">🍱</div>
+        <div class="hero-img"><img src="img/LOGO.png" class="logo-sidebaro"></div>
       </div>
 
       <div class="categorias">
@@ -156,4 +156,26 @@
 
   <script src="script.js"></script>
 </body>
+<!-- INTEGRACIÓN DE FIREBASE EN LOGIN -->
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAuzfF9UFa-JQXR6as8w_8z9LuC2CZosa4",
+    authDomain: "mi-sitio-web-88c37.firebaseapp.com",
+    projectId: "mi-sitio-web-88c37",
+    storageBucket: "mi-sitio-web-88c37.firebasestorage.app",
+    messagingSenderId: "669526095854",
+    appId: "1:669526095854:web:693b4e98f1b1c8bb4340ff",
+    measurementId: "G-52C86M1J4D"
+  };
+
+  // Inicialización global
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  window.db = firebase.firestore();
+  console.log("✅ Firebase conectado en Login");
+</script>
 </html>
