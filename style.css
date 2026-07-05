@@ -423,3 +423,17 @@ flex-direction:column;
 text-align:center;
 }
 }
+.logo-sidebar {
+    max-width: 100%; /* Nunca se saldrá del contenedor */
+    width: 120px;    /* Define un tamaño fijo cómodo */
+    height: auto;    /* Mantiene la proporción para que no se deforme */
+    display: block;
+    margin: 0 auto;  /* Si quieres centrarlo */
+}
+.logo-sidebaro {
+    max-width: 100%; /* Nunca se saldrá del contenedor */
+    width:     200px;    /* Define un tamaño fijo cómodo */
+    height: auto;    /* Mantiene la proporción para que no se deforme */
+    display: block;
+    margin: 0 auto;  /* Si quieres centrarlo */
+}
