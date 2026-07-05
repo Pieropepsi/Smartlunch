@@ -23,7 +23,6 @@ let fechaFiltroActual = obtenerFechaLocal();
 // Catálogo por defecto
 const catalogoInicial = {
   "Sándwich de pollo": { emoji: "🥪", categoria: "sandwich", precio: "6.00" },
-  "Hot Dog": { emoji: "🌭", categoria: "sandwich", precio: "4.50" },
   "Sándwich Mixto": { emoji: "🥪", categoria: "sandwich", precio: "5.00" },
   "Jugo de naranja": { emoji: "🧃", categoria: "bebida", precio: "3.00" },
   "Gaseosa": { emoji: "🥤", categoria: "bebida", precio: "3.50" },
@@ -399,17 +398,6 @@ function guardarProducto() {
   document.getElementById("nuevoPrecio").value = "";
   renderizarInventario();
 }
-
-function eliminarProductoAdmin(nombre) {
-  if (confirm(`¿Eliminar ${nombre}?`)) {
-    let catalogo = JSON.parse(localStorage.getItem("catalogoProductos"));
-    delete catalogo[nombre];
-    localStorage.setItem("catalogoProductos", JSON.stringify(catalogo));
-    renderizarInventario();
-  }
-}
-
-// ACTUALIZACIÓN DEL INICIALIZADOR
 document.addEventListener("DOMContentLoaded", function () {
   // [TU CÓDIGO ORIGINAL...]
   
@@ -460,10 +448,6 @@ window.addEventListener("load", () => {
     document.body.classList.add("dark-mode");
   }
 });
-// ========================================================
-// 🚀 INTEGRACIÓN CON FIREBASE (NUBE)
-// ========================================================
-
 // 1. ESCUCHAR CAMBIOS EN LA NUBE Y ACTUALIZAR LOCALSTORAGE
 // Esto se ejecutará cada vez que alguien guarde o borre un producto en la nube
 function iniciarSincronizacionFirebase() {
@@ -520,30 +504,17 @@ function guardarProducto() {
     }
 }
 
-// 3. MODIFICAR ELIMINAR PRODUCTO PARA LA NUBE
-// Reemplaza tu función eliminarProductoAdmin antigua por esta:
 function eliminarProductoAdmin(nombre) {
-    if (confirm(`¿Eliminar ${nombre} de la nube?`)) {
-        console.log("Intentando eliminar:", nombre); // Veremos esto en la consola
-        
-        if (window.db) {
-            window.db.collection("productos").doc(nombre).delete()
-            .then(() => {
-                console.log("✅ Eliminado con éxito de Firebase");
-                alert("🗑️ Producto eliminado de la nube.");
-            })
-            .catch((error) => {
-                console.error("❌ Error al eliminar en Firebase:", error);
-                alert("Error al eliminar: " + error.message);
-            });
-        } else {
-            console.error("❌ window.db no está definido");
-            alert("Error: La base de datos no está conectada.");
-        }
+    alert("🟢 Botón presionado. Nombre recibido: '" + nombre + "' (longitud: " + nombre.length + ")");
+    console.log("Intentando borrar:", nombre);
+    
+    // El resto de tu código...
+    if (confirm(`¿Eliminar ${nombre}?`)) {
+        window.db.collection("productos").doc(nombre).delete()
+            .then(() => alert("✅ Eliminado con éxito"))
+            .catch((e) => alert("❌ Error en Firebase: " + e.message));
     }
 }
-// --- SISTEMA DE AUTENTICACIÓN ---
-
 // 1. REGISTRAR USUARIO
 function registrarUsuario() {
     const email = document.getElementById("email").value;
@@ -578,4 +549,24 @@ function iniciarSesion() {
         .catch((error) => {
             alert("Error: " + error.message);
         });
+}
+// --- FUNCIONES DE FILTRADO ---
+
+function mostrarTodos() {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.style.display = 'block'; // Muestra todos
+    });
+}
+
+function filtrar(categoria) {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        // Verifica si la tarjeta tiene la clase que corresponde a la categoría (sandwich, bebida, etc.)
+        if (card.classList.contains(categoria)) {
+            card.style.display = 'block'; // Muestra si coincide
+        } else {
+            card.style.display = 'none';  // Oculta si no coincide
+        }
+    });
 }
